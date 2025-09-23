@@ -1,0 +1,6 @@
+Praca domowa:
+- Dorobic endpointy - PUT, DELETE, GET
+- Dodac nową encje - Client, ClientData(ulica, miasto, kod pocztowy, nr telefonu, nr pesel) -
+oraz repozytorium, dodac relacje. W runnerze dodac kilka przykladowych wpisow.
+- Dodac endpointy - POST, PUT, DELETE, GET dla encji wyzej
+- Jak sie wyrobisz to dodac encje reservation (od kiedy do kiedy, jaki bike, jaki client)
