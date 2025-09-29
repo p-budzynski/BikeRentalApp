@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import pl.kurs.app.BikeRunner;
 import pl.kurs.app.ClientRunner;
+import pl.kurs.app.ReservationRunner;
 
 @SpringBootApplication
 public class Main {
@@ -13,9 +14,11 @@ public class Main {
 
         BikeRunner bikeRunner = ctx.getBean(BikeRunner.class);
         ClientRunner clientRunner = ctx.getBean(ClientRunner.class);
+        ReservationRunner reservationRunner = ctx.getBean(ReservationRunner.class);
 
         bikeRunner.run();
         clientRunner.run();
+        reservationRunner.run();
 
     }
 }

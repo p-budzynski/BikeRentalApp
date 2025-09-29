@@ -1,6 +1,28 @@
 Praca domowa:
-- Dorobic endpointy - PUT, DELETE, GET
-- Dodac nową encje - Client, ClientData(ulica, miasto, kod pocztowy, nr telefonu, nr pesel) -
-oraz repozytorium, dodac relacje. W runnerze dodac kilka przykladowych wpisow.
-- Dodac endpointy - POST, PUT, DELETE, GET dla encji wyzej
-- Jak sie wyrobisz to dodac encje reservation (od kiedy do kiedy, jaki bike, jaki client)
+V - Dorobic endpointy - PUT, DELETE, GET
+V - Dodac nową encje - Client, ClientData(ulica, miasto, kod pocztowy, nr telefonu, nr pesel) -
+V oraz repozytorium, dodac relacje. W runnerze dodac kilka przykladowych wpisow.
+V - Dodac endpointy - POST, PUT, DELETE, GET dla encji wyzej
+V - Jak sie wyrobisz to dodac encje reservation (od kiedy do kiedy, jaki bike, jaki client)
+
+Optimistic locking:
+- Opiera sie na kolumnie version w bazie
+- Podczas pobierania encji zapisywana jest aktualna wersja ktora potem jest sprawdzana podczas zapisu
+- Jezeli wersja sie zmienila to leci wyjątek i trzeba sprobowac ponowic operacje
+- Bardziej wydajne jezeli chodzi o duzy wolumen requestow
+- Nie powoduje deadlock
+
+Pessimistic locking:
+- Opiera sie na blokadzie na bazie (SELECT ... for update)
+- Gdy jeden watek zalockuje wpis to drugi czeka
+- Bardziej bezpieczny
+- Mozliwosc deadlokc
+- Mniej wydajny przy duzym wolumenie requestow
+
+
+Praca domowa:
+ V - Dorobic endpoint put do aktualizacji (mozliwosc aktualizacji daty, nie dajemy mozliwosic aktualizacji roweru lub clienta)
+ V - Dorobic endpoint do anulacji rezerwacji (/cancellations/id)
+ V - Dostosowac handler tak aby zwracal odpowiednie kody bledow
+ - Testy jednostkowe
+ V - Walidacje

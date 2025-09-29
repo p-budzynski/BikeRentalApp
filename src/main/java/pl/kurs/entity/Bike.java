@@ -5,8 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.SQLDelete;
 
 @Entity
+@SQLDelete(sql = "UPDATE bikes SET deleted = true WHERE id = ?")
+@Table(name = "bikes")
 @NoArgsConstructor
 @Getter
 @Setter
@@ -17,9 +20,14 @@ public class Bike {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String brand;
 
+    @Column(nullable = false)
     private String model;
+
+    @Column(nullable = false)
+    private Boolean deleted = false;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "bike_details_id")

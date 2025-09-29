@@ -6,7 +6,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.kurs.entity.Client;
 import pl.kurs.exception.DataNotFoundException;
+import pl.kurs.exception.EntityCannotBeDeleteException;
 import pl.kurs.repository.ClientRepository;
+import pl.kurs.repository.ReservationRepository;
 
 import java.util.List;
 
@@ -14,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ClientService {
     private final ClientRepository clientRepository;
+    private final ReservationRepository reservationRepository;
 
     @Transactional
     public Client save(Client client) {
@@ -22,19 +25,29 @@ public class ClientService {
 
     public Client getClientById(Long id) {
         return clientRepository.findById(id)
-                .orElseThrow(() -> new DataNotFoundException("Client not found with id: " + id));
+                .orElseThrow(() -> new DataNotFoundException(STR."Client not found with id: \{id}"));
     }
 
+    @Transactional
     public void deleteById(Long id) {
-        clientRepository.deleteById(id);
+        if (clientRepository.existsById(id)) {
+            if (reservationRepository.existsByClientId(id)) {
+                throw new EntityCannotBeDeleteException(STR."Cannot delete client with id: \{id} - the client has active reservations");
+            }
+            clientRepository.deleteById(id);
+        }
     }
 
     @Transactional
     public Client updateClient(Client client) {
-        Client clientToUpdate = clientRepository.findById(client.getId())
-                .orElseThrow(() -> new DataNotFoundException("Client with id: " + client.getId() + " not found"));
+        Client clientToUpdate = getClientByIdForUpdate(client.getId());
         BeanUtils.copyProperties(client, clientToUpdate);
         return clientRepository.save(clientToUpdate);
+    }
+
+    private Client getClientByIdForUpdate(Long id) {
+        return clientRepository.findClientByIdForUpdate(id)
+                .orElseThrow(() -> new DataNotFoundException(STR."Client not found with id: \{id}"));
     }
 
     public List<Client> getAll() {
