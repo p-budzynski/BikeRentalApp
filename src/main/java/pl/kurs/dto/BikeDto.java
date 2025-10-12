@@ -31,4 +31,9 @@ public class BikeDto {
     @Valid
     private BikeDetailsDto bikeDetails;
 
+    public BikeDto(String brand, String model, BikeDetailsDto bikeDetails) {
+        this.brand = brand;
+        this.model = model;
+        this.bikeDetails = bikeDetails;
+    }
 }

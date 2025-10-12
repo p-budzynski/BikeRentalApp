@@ -19,11 +19,11 @@ import java.time.LocalDate;
 @EndDateAfterStartDate
 public class ReservationUpdateDatesDto {
 
-    @NotNull(message = "Start date is required", groups = Update.class)
+    @NotNull(message = "Start date is required")
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate startDate;
 
-    @NotNull(message = "End date is required", groups = Update.class)
+    @NotNull(message = "End date is required")
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate endDate;
 }

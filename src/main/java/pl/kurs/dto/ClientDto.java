@@ -29,5 +29,11 @@ public class ClientDto {
 
     @Valid
     private ClientDataDto clientData;
+
+    public ClientDto(String firstName, String lastName, ClientDataDto clientData) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.clientData = clientData;
+    }
 }
 

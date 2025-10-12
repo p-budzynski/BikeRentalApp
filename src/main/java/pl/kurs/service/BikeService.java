@@ -24,7 +24,7 @@ public class BikeService {
     }
 
     public Bike getBikeById(Long id) {
-        return bikeRepository.findById(id)
+        return bikeRepository.findByIdAndDeletedFalse(id)
                 .orElseThrow(() -> new DataNotFoundException(STR."Bike not found with id: \{id}"));
     }
 
@@ -32,7 +32,8 @@ public class BikeService {
     public void deleteById(Long id) {
         if (bikeRepository.existsById(id)) {
             if (reservationRepository.existsByBikeId(id)) {
-             throw new EntityCannotBeDeleteException(STR."Cannot delete bike with id: \{id} - the bike has active reservations");
+             throw new EntityCannotBeDeleteException(
+                     STR."Cannot delete bike with id: \{id} - the bike has active reservations");
             }
             bikeRepository.deleteById(id);
         }
@@ -46,11 +47,7 @@ public class BikeService {
     }
 
     public List<Bike> getAll() {
-        List<Bike> bikes = bikeRepository.findAll();
-        if (bikes.isEmpty()) {
-            throw new DataNotFoundException("No bikes in the database");
-        }
-        return bikes;
+        return bikeRepository.findAllByDeletedFalse();
     }
 
     public Bike getBikeByIdForUpdate(Long id) {
