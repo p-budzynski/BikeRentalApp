@@ -20,9 +20,28 @@ Pessimistic locking:
 - Mniej wydajny przy duzym wolumenie requestow
 
 
+****************************************************
+
 Praca domowa:
  V - Dorobic endpoint put do aktualizacji (mozliwosc aktualizacji daty, nie dajemy mozliwosic aktualizacji roweru lub clienta)
  V - Dorobic endpoint do anulacji rezerwacji (/cancellations/id)
  V - Dostosowac handler tak aby zwracal odpowiednie kody bledow
- - Testy jednostkowe
+ V - Testy jednostkowe
  V - Walidacje
+
+ uwagi:
+
+ widze kilka problemow:
+ V - podczas pobierania rowerow badz klientow etc. pobieramy zawsze wszystkich - nie wazne czy sa skasowani. Takie pobieranie powinno byc on-demand, np @RequestParam w GET "includeDeleted"
+ V - dodanie walidacji braku mozliwosci rezerwacji jezeli klient/rower jest "skasowany".
+ V - walidacja nie do konca dziala - wlasnie dodalem 10 rezerwacji na ten sam czas, dodatkowo dalem startDate po endDate i tez przeszlo
+
+
+
+
+
+****************************************************
+ Praca domowa:
+ - Wysylka obiektu przez Kafke (email-notification) - public void receiveNotification(EmailNotification message) {
+ - Libka ktora bedzie odpowiedzialna za tą notyfikacje (klasa modelowa)(mvn clean install i dodanie w pom)
+ - Wysylka maili

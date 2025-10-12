@@ -24,7 +24,7 @@ public class ClientController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<ClientDto> createClient(@RequestBody @Validated(Create.class) ClientDto clientDto) {
+    public ResponseEntity<ClientDto> createClient(@RequestBody @Validated ClientDto clientDto) {
         Client client = clientMapper.dtoToEntity(clientDto);
         Client saved = clientService.save(client);
         return ResponseEntity.ok(clientMapper.entityToDto(saved));

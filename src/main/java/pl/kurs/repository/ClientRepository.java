@@ -6,11 +6,17 @@ import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import pl.kurs.entity.Client;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ClientRepository extends JpaRepository<Client, Long> {
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("select c from Client c where c.id = :id")
+    @Query("select c from Client c where c.id = :id and c.deleted = false")
     Optional<Client> findClientByIdForUpdate(Long id);
+
+    Optional<Client> findByIdAndDeletedFalse(Long id);
+
+    List<Client> findAllByDeletedFalse();
+
 }

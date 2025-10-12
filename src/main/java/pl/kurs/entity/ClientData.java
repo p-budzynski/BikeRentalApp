@@ -35,17 +35,21 @@ public class ClientData {
     private String pesel;
 
     @Column(nullable = false)
+    private String mail;
+
+    @Column(nullable = false)
     private Boolean deleted = false;
 
     @OneToOne(mappedBy = "clientData")
     private Client client;
 
-    public ClientData(String street, String city, String zipCode, String phoneNumber, String pesel) {
+    public ClientData(String street, String city, String zipCode, String phoneNumber, String pesel, String mail) {
         this.street = street;
         this.city = city;
         this.zipCode = zipCode;
         this.phoneNumber = phoneNumber;
         this.pesel = pesel;
+        this.mail = mail;
     }
 
     @Override

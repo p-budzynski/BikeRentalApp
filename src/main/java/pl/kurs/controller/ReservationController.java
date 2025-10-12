@@ -24,7 +24,7 @@ public class ReservationController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ReservationDto createReservation(@RequestBody @Validated(Create.class) ReservationDto reservationDto) {
+    public ReservationDto createReservation(@RequestBody @Validated ReservationDto reservationDto) {
         Reservation reservation = reservationService.createReservation(reservationDto);
         return reservationMapper.entityToDto(reservation);
     }
@@ -38,7 +38,7 @@ public class ReservationController {
     @PatchMapping("/{id}/dates")
     public ResponseEntity<ReservationDto> updateReservationDatesById(
             @PathVariable @Min(value = 1, message = "ID must be greater than zero!") Long id,
-            @RequestBody @Validated(Update.class) ReservationUpdateDatesDto updateDto) {
+            @RequestBody @Validated ReservationUpdateDatesDto updateDto) {
         Reservation reservation = reservationService.updateReservationDatesById(id, updateDto);
         return ResponseEntity.ok(reservationMapper.entityToDto(reservation));
     }

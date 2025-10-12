@@ -23,4 +23,8 @@ public class BikeDetailsDto {
     @NotBlank(message = "Vin number must not be blank", groups = {Create.class, Update.class})
     @Pattern(regexp = "^[A-Z0-9]{8}$", message = "The VIN number must consist of 8 characters: letters and numbers", groups = {Create.class, Update.class})
     private String vinNumber;
+
+    public BikeDetailsDto(String vinNumber) {
+        this.vinNumber = vinNumber;
+    }
 }

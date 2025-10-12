@@ -21,6 +21,7 @@ public class ReservationService {
     private final BikeService bikeService;
     private final ClientService clientService;
     private final ReservationMapper reservationMapper;
+    private final BikeRentalService bikeRentalService;
 
     @Transactional
     public Reservation createReservation(ReservationDto reservationDto) {
@@ -31,32 +32,28 @@ public class ReservationService {
         reservation.setBike(bike);
         reservation.setClient(client);
         reservation.setStatus(Status.RESERVED);
-        return reservationRepository.save(reservation);
+        Reservation createdReservation = reservationRepository.save(reservation);
+        bikeRentalService.sendReservationConfirmation(client, bike, createdReservation);
+        return createdReservation;
     }
 
     public Reservation findReservationById(Long id) {
         return reservationRepository.findById(id).
-                orElseThrow(() -> new DataNotFoundException(STR."Reservation with id: \{id} not found"));
+                orElseThrow(() -> new DataNotFoundException(STR."Reservation not found with id: \{id}"));
     }
 
     @Transactional
     public Reservation cancelReservationById(Long id) {
         Reservation reservation = getReservationByIdForUpdate(id);
         reservation.setStatus(Status.CANCELED);
-        return reservationRepository.save(reservation);
+        Reservation canceledReservation = reservationRepository.save(reservation);
+        bikeRentalService.sendReservationCancellation(canceledReservation.getClient(), canceledReservation.getBike(), canceledReservation);
+        return canceledReservation;
     }
 
     public Reservation getReservationByIdForUpdate(Long id) {
         return reservationRepository.findByIdForUpdate(id)
-                .orElseThrow(() -> new DataNotFoundException(STR."Resevration not found with id: \{id}"));
-    }
-
-    private void throwExceptionIfOverlappingReservation(ReservationDto reservationDto, Bike bike) {
-        boolean existsOverlappingReservation = reservationRepository.existsOverlappingReservation(
-                bike.getId(), reservationDto.getStartDate(), reservationDto.getEndDate());
-        if (existsOverlappingReservation) {
-            throw new OverlappingReservationException(STR."There is overlapping reservation for bike id: \{bike.getId()}");
-        }
+                .orElseThrow(() -> new DataNotFoundException(STR."Reservation not found with id: \{id}"));
     }
 
     @Transactional
@@ -65,6 +62,14 @@ public class ReservationService {
         reservation.setStartDate(updateDto.getStartDate());
         reservation.setEndDate(updateDto.getEndDate());
         return reservationRepository.save(reservation);
+    }
+
+    private void throwExceptionIfOverlappingReservation(ReservationDto reservationDto, Bike bike) {
+        boolean existsOverlappingReservation = reservationRepository.existsOverlappingReservation(
+                bike.getId(), reservationDto.getStartDate(), reservationDto.getEndDate());
+        if (existsOverlappingReservation) {
+            throw new OverlappingReservationException(STR."There is overlapping reservation for bike id: \{bike.getId()}");
+        }
     }
 
 }

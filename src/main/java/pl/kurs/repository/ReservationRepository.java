@@ -21,7 +21,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     boolean existsOverlappingReservation(Long bikeId, LocalDate startDate, LocalDate endDate);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("select r from Reservation r where r.id = :id")
+    @Query("select r from Reservation r where r.id = :id and r.status <> 'CANCELED'")
     Optional<Reservation> findByIdForUpdate(Long id);
 
     boolean existsByBikeId(Long id);

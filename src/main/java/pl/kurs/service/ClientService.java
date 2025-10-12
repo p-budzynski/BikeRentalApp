@@ -24,7 +24,7 @@ public class ClientService {
     }
 
     public Client getClientById(Long id) {
-        return clientRepository.findById(id)
+        return clientRepository.findByIdAndDeletedFalse(id)
                 .orElseThrow(() -> new DataNotFoundException(STR."Client not found with id: \{id}"));
     }
 
@@ -51,10 +51,6 @@ public class ClientService {
     }
 
     public List<Client> getAll() {
-        List<Client> clients = clientRepository.findAll();
-        if (clients.isEmpty()) {
-            throw new DataNotFoundException("No clients in the database");
-        }
-        return clients;
+        return clientRepository.findAllByDeletedFalse();
     }
 }

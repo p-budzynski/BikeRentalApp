@@ -1,9 +1,6 @@
 package pl.kurs.dto;
 
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,4 +34,17 @@ public class ClientDataDto {
     @NotBlank(message = "PESEL number must not be blank")
     @Pattern(regexp = "\\d{11}", message = "PESEL must have 11 digits")
     private String pesel;
+
+    @NotBlank(message = "E-mail must not be blank")
+    @Email
+    private String mail;
+
+    public ClientDataDto(String street, String city, String zipCode, String phoneNumber, String pesel, String mail) {
+        this.street = street;
+        this.city = city;
+        this.zipCode = zipCode;
+        this.phoneNumber = phoneNumber;
+        this.pesel = pesel;
+        this.mail = mail;
+    }
 }

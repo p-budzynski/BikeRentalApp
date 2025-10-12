@@ -20,6 +20,12 @@ spring:
             hibernate:
                 format_sql: true
 
+    kafka:
+        bootstrap-servers: localhost:9092
+
+    mail:
+        username: biuro@bike-rental.com
+
 server:
     port: 8081
 
